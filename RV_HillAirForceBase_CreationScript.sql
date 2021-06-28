@@ -11,7 +11,7 @@ ON PRIMARY
 
 (
 NAME = 'RV_HillAirForceBase',
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\RV_HillAirForceBase.mdf',
+FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\RV_HillAirForceBase.mdf', --Change to your own directory
 --FILENAME LOCAL
 SIZE = 12MB,
 MAXSIZE = 50MB,
@@ -22,7 +22,7 @@ LOG ON
 
 (
 NAME = 'RV_HillAirForceBase_Log',
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\RV_HillAirForceBase.ldf',
+FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\RV_HillAirForceBase.ldf', --Change to your own directory
 --FILENAME LOCAL
 SIZE = 12MB,
 MAXSIZE = 50MB,
@@ -34,11 +34,11 @@ GO
 USE RV_HillAirForceBase
 
 CREATE TABLE CUSTOMER(
-	CustomerID					int	IDENTITY(1,1)		NOT NULL,
-	CustomerFirstName			varchar(50)				NOT NULL,
-	CustomerLastName			varchar(50)				NOT NULL,
-	CustomerEmail				varchar(320)			NOT NULL,
-	CustomerPhone				varchar(15)				NOT NULL,
+	CustID					int	IDENTITY(1,1)		NOT NULL,
+	CustFirstName			varchar(50)				NOT NULL,
+	CustLastName			varchar(50)				NOT NULL,
+	CustEmail				varchar(320)			NOT NULL,
+	CustPhone				varchar(15)				NOT NULL,
 	ServiceStatusID				int						NOT NULL,
 	DODAffiliationID			int						NOT NULL
 )
@@ -55,18 +55,18 @@ CREATE TABLE DOD_AFFILIATION_TYPE(
 	DODAffilationName	varchar(50)			NOT NULL,
 )
 
-CREATE TABLE INVOICE(
-	InvoiceID		int IDENTITY(1,1)	NOT NULL,
-	InvoicePaidDate	smalldatetime     		NULL,
+CREATE TABLE PAYMENT(
+	PayID		int IDENTITY(1,1)	NOT NULL,
+	PayDate	smalldatetime     		NULL,
+	PayTotalCost	smallmoney		NOT NULL,
 	IsPaid			bit					NOT NULL,
-	ReservationID	int					NOT NULL,
+	ResID	int					NOT NULL,
 	ReasonID		int					NOT NULL,
-	PaymentTypeID	tinyint					NULL,
+	PaymentTypeID	tinyint				NOT	NULL,
 	CCReference		varchar(20)				NULL,
---  FeeID			int					NOT NULL
 )
 
-CREATE TABLE INVOICE_REASON(
+CREATE TABLE PAYMENT_REASON(
 	ReasonID	int	IDENTITY(1,1)	NOT NULL,
 	ReasonName	varchar(20)			NOT NULL
 )
@@ -87,18 +87,21 @@ CREATE TABLE PAYMENT_TYPE(
 )
 
 CREATE TABLE RESERVATION(
-	ReservationID					int	IDENTITY(1,1)	NOT NULL,
-	ReservationNumAdults			tinyint				NOT NULL,
-	ReservationNumChildren			tinyint				NOT NULL,
-	ReservationNumPets				tinyint				NOT NULL,
-	ReservationAcknowledgeValidPets	bit						NULL,
-	ReservationStartDate			smalldatetime		NOT NULL,
-	ReservationEndDate				smalldatetime		NOT NULL,
-	ReservationCreatedDate			smalldatetime		NOT NULL,
-	ReservationComment				varchar(max)			NULL,
-	ReservationVehicleLength		tinyint					NULL,
-	VehicleTypeID					tinyint					null,
-	CustomerID						int					NOT NULL,
+	ResID					int	IDENTITY(1,1)	NOT NULL,
+	ResNumAdults			tinyint				NOT NULL,
+	ResNumChildren			tinyint				NOT NULL,
+	ResNumPets				tinyint				NOT NULL,
+	ResAcknowledgeValidPets	bit						NULL,
+	ResStartDate			smalldatetime		NOT NULL,
+	ResEndDate				smalldatetime		NOT NULL,
+	ResCreatedDate			smalldatetime		NOT NULL,
+	ResComment				varchar(max)			NULL,
+	ResVehicleLength		tinyint					NULL,
+	ResLastModifiedBy		varchar(10)				NULL,
+	ResLastModifiedDate		smalldatetime			NULL,
+
+	VehicleTypeID					tinyint				NOT	NULL,
+	CustID							int					NOT NULL,
 	SiteID							tinyint				NOT NULL,
 	StatusID						int					NOT NULL
 )
@@ -112,7 +115,7 @@ CREATE TABLE RESERVATION_STATUS(
 CREATE TABLE SECURITY_ANSWER(
 	AnswerID		int	identity(1,1)	NOT NULL,
 	AnswerText		varchar(50)			NOT NULL,
-	CustomerID		int					NOT NULL,
+	CustID		int					NOT NULL,
 	QuestionID		tinyint				NOT NULL
 )
 
@@ -128,34 +131,34 @@ CREATE TABLE SERVICE_STATUS_TYPE(
 
 CREATE TABLE SITE(
 	SiteID			tinyint	IDENTITY(1,1)	NOT NULL,
-	SiteName		varchar(50)				NOT NULL,
+	SiteNumber		varchar(5)				NOT NULL,
 	SiteLength		tinyint					NOT NULL,
-	SiteDailyCost	smallmoney				NOT NULL,
 	SiteDescription	varchar(max)				NULL,
 	SiteCategoryID	tinyint					NOT NULL,
---	LocationID		int						NOT NULL
 )
 
 CREATE TABLE SITE_CATEGORY(
 	SiteCategoryID			tinyint	IDENTITY(1,1)	NOT NULL,
 	SiteCategoryName		varchar(50)				NOT NULL,
 	SiteCategoryDescription	varchar(max)				NULL,
-	SiteCategoryCost		smallmoney				NOT NULL
+	LocationID				int						NOT NULL
 )
 
 CREATE TABLE SITE_RATE(
 	RateID			int	IDENTITY(1,1)	NOT NULL,
-	RateName		varchar(50)			NOT NULL,
 	RateAmount		smallmoney			NOT NULL,
 	RateStartDate	smalldatetime		NOT NULL,
 	RateEndDate		smalldatetime		NOT NULL,
+	RateLastModifiedBy	varchar(50)			NULL,
+	RateLastModifiedDate	smalldatetime	NULL,
 	SiteCategoryID	tinyint				NOT NULL
 )
 
 CREATE TABLE SPECIAL_EVENT(
 	EventID				int	IDENTITY(1,1)	NOT NULL,
 	EventName			varchar(50)			NOT NULL,
-	EventDate			smalldatetime		NOT NULL,
+	EventStartDate		smalldatetime		NOT NULL,
+	EventEndDate		smalldatetime		NOT NULL,
 	EventDescription	varchar(max)			NULL,
 	LocationID			int					NOT NULL
 )
@@ -165,9 +168,3 @@ CREATE TABLE VEHICLE_TYPE(
 	TypeName		varchar(50)				NOT NULL,
 	TypeDescription	varchar(max)				NULL
 )
-
--- CREATE TABLE FEE(
--- 	FeeID			int			NOT NULL,
--- 	FeeAmount		smallmoney	NOT NULL,
--- 	FeeDescription	varchar(25)		NULL,
--- )
