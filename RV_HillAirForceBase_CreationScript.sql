@@ -57,7 +57,6 @@ CREATE TABLE DOD_AFFILIATION_TYPE(
 
 CREATE TABLE INVOICE(
 	InvoiceID		int IDENTITY(1,1)	NOT NULL,
-	InvoiceSentDate	smalldatetime		NOT NULL,
 	InvoicePaidDate	smalldatetime     		NULL,
 	IsPaid			bit					NOT NULL,
 	ReservationID	int					NOT NULL,
