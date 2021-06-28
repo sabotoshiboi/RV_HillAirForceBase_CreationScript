@@ -34,17 +34,25 @@ GO
 USE RV_HillAirForceBase
 
 CREATE TABLE CUSTOMER(
+<<<<<<< HEAD
 	CustID					int	IDENTITY(1,1)		NOT NULL,
 	CustFirstName			varchar(50)				NOT NULL,
 	CustLastName			varchar(50)				NOT NULL,
 	CustEmail				varchar(320)			NOT NULL,
 	CustPhone				varchar(15)				NOT NULL,
+=======
+	CustID						int	IDENTITY(1,1)		NOT NULL,
+	CustFirstName				varchar(50)				NOT NULL,
+	CustLastName				varchar(50)				NOT NULL,
+	CustEmail					varchar(320)			NOT NULL,
+	CustPhone					varchar(15)				NOT NULL,
+>>>>>>> c1cb9e1b240c34538108522eda4d5f871583f1dd
 	ServiceStatusID				int						NOT NULL,
 	DODAffiliationID			int						NOT NULL
 )
 
 CREATE TABLE CUSTOMER_PASSWORD(
-	CustomerID				int				NOT NULL,
+	CustID					int				NOT NULL,
 	Password				varchar(40)		NOT NULL,
 	Active					bit				NOT NULL,
 	PasswordAssignedDate	smalldatetime	NOT NULL
@@ -55,6 +63,7 @@ CREATE TABLE DOD_AFFILIATION_TYPE(
 	DODAffilationName	varchar(50)			NOT NULL,
 )
 
+<<<<<<< HEAD
 CREATE TABLE PAYMENT(
 	PayID		int IDENTITY(1,1)	NOT NULL,
 	PayDate	smalldatetime     		NULL,
@@ -71,6 +80,8 @@ CREATE TABLE PAYMENT_REASON(
 	ReasonName	varchar(20)			NOT NULL
 )
 
+=======
+>>>>>>> c1cb9e1b240c34538108522eda4d5f871583f1dd
 CREATE TABLE LOCATION(
 	LocationID			int	IDENTITY(1,1)	NOT NULL,
 	LocationName		varchar(100)		NOT NULL,
@@ -81,12 +92,28 @@ CREATE TABLE LOCATION(
 	LocationZip			varchar(10)			NOT NULL
 )
 
+CREATE TABLE PAYMENT(
+	PayID			int IDENTITY(1,1)	NOT NULL,
+	PayDate			smalldatetime     		NULL,
+	IsPaid			bit					NOT NULL,
+	ReservationID	int					NOT NULL,
+	ResID			int					NOT NULL,
+	PaymentTypeID	tinyint					NULL,
+	CCReference		varchar(20)				NULL,
+)
+
+CREATE TABLE PAYMENT_REASON(
+	ReasonID	int	IDENTITY(1,1)	NOT NULL,
+	ReasonName	varchar(20)			NOT NULL
+)
+
 CREATE TABLE PAYMENT_TYPE(
 	PaymentTypeID	tinyint	IDENTITY(1,1)	NOT NULL,
 	PaymentType		varchar(11)				NOT NULL
 )
 
 CREATE TABLE RESERVATION(
+<<<<<<< HEAD
 	ResID					int	IDENTITY(1,1)	NOT NULL,
 	ResNumAdults			tinyint				NOT NULL,
 	ResNumChildren			tinyint				NOT NULL,
@@ -101,6 +128,19 @@ CREATE TABLE RESERVATION(
 	ResLastModifiedDate		smalldatetime			NULL,
 
 	VehicleTypeID					tinyint				NOT	NULL,
+=======
+	ResID							int	IDENTITY(1,1)	NOT NULL,
+	ResNumAdults					tinyint				NOT NULL,
+	ResNumChildren					tinyint				NOT NULL,
+	ResNumPets						tinyint				NOT NULL,
+	ResAcknowledgeValidPets			bit						NULL,
+	ResStartDate					smalldatetime		NOT NULL,
+	ResEndDate						smalldatetime		NOT NULL,
+	ResCreatedDate					smalldatetime		NOT NULL,
+	ResComment						varchar(max)			NULL,
+	ResVehicleLength				tinyint					NULL,
+	VehicleTypeID					tinyint					null,
+>>>>>>> c1cb9e1b240c34538108522eda4d5f871583f1dd
 	CustID							int					NOT NULL,
 	SiteID							tinyint				NOT NULL,
 	StatusID						int					NOT NULL
@@ -115,7 +155,11 @@ CREATE TABLE RESERVATION_STATUS(
 CREATE TABLE SECURITY_ANSWER(
 	AnswerID		int	identity(1,1)	NOT NULL,
 	AnswerText		varchar(50)			NOT NULL,
+<<<<<<< HEAD
 	CustID		int					NOT NULL,
+=======
+	CustID			int					NOT NULL,
+>>>>>>> c1cb9e1b240c34538108522eda4d5f871583f1dd
 	QuestionID		tinyint				NOT NULL
 )
 
@@ -138,10 +182,17 @@ CREATE TABLE SITE(
 )
 
 CREATE TABLE SITE_CATEGORY(
+<<<<<<< HEAD
 	SiteCategoryID			tinyint	IDENTITY(1,1)	NOT NULL,
 	SiteCategoryName		varchar(50)				NOT NULL,
 	SiteCategoryDescription	varchar(max)				NULL,
 	LocationID				int						NOT NULL
+=======
+	SiteCatID			tinyint	IDENTITY(1,1)	NOT NULL,
+	SiteCatName			varchar(50)				NOT NULL,
+	SiteCatDescription	varchar(max)				NULL,
+	SiteCatCost			smallmoney				NOT NULL
+>>>>>>> c1cb9e1b240c34538108522eda4d5f871583f1dd
 )
 
 CREATE TABLE SITE_RATE(
