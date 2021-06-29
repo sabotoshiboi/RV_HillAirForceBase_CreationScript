@@ -69,7 +69,6 @@ CREATE TABLE LOCATION(
 
 CREATE TABLE PAYMENT(
 	PayID				int IDENTITY(1,1)	NOT NULL,
-	PayDate				smalldatetime     	NOT NULL,
 	PayDate				smallmoney     		NOT NULL,
 	IsPaid				bit					NOT NULL,
 	ResID				int					NOT NULL,
