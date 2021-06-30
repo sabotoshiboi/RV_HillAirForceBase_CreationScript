@@ -69,7 +69,7 @@ CREATE TABLE LOCATION(
 
 CREATE TABLE PAYMENT(
 	PayID				int IDENTITY(1,1)	NOT NULL,
-	PayDate				smallmoney     		NOT NULL,
+	PayDate				smalldatetime  		NOT NULL,
 	IsPaid				bit					NOT NULL,
 	ResID				int					NOT NULL,
 	PayTypeID			tinyint				NOT NULL,
@@ -171,3 +171,51 @@ CREATE TABLE VEHICLE_TYPE(
 	TypeName		varchar(50)				NOT NULL,
 	TypeDescription	varchar(max)				NULL
 )
+
+GO
+--Check Constraints
+ALTER TABLE PAYMENT_TYPE
+	ADD
+	CONSTRAINT CK_InproperPaymentType
+	CHECK (PayType = 'Check' OR PayType = 'Cash' OR PayType = 'Card')
+
+ALTER TABLE RESERVATION
+	ADD
+	--Not sure if this one will work
+	CONSTRAINT CK_TooLongOfStay
+	CHECK (DATEDIFF(day, ResStartDate, ResEndDate) > 15 AND (ResStartDate BETWEEN '04-15' AND '10-15' OR ResEndDate BETWEEN '04-15' AND '10-15')),
+	CONSTRAINT CK_TooManyPets
+	CHECK (ResNumPets <= 2)
+
+ALTER TABLE DOD_AFFILIATION_TYPE
+	ADD
+	CONSTRAINT CK_InproperDODTag
+	CHECK (DODAffilationType = 'Army' OR DODAffilationType = 'Air Force' OR DODAffilationType = 'Navy' OR DODAffilationType = 'Marines' OR DODAffilationType = 'Coast Guard')
+
+ALTER TABLE SERVICE_STATUS_TYPE
+	ADD
+	CONSTRAINT CK_InproperServiceStatus
+	CHECK (ServiceStatusType = 'Active' OR ServiceStatusType = 'Retired' OR ServiceStatusType = 'Reserves' OR ServiceStatusType = 'PCS')
+
+--This is not good to check on this end for multiple reasons, but this is a simple check
+ALTER TABLE CUSTOMER
+	ADD
+	CONSTRAINT CK_InvalidEmail
+	CHECK (CustEmail like '%@%')
+
+ALTER TABLE VEHICLE_TYPE
+	ADD
+	CONSTRAINT CK_InproperVehicleType
+	CHECK (TypeName = 'Motor Home' OR TypeName = 'Travel Trailer' OR TypeName = '5th Wheel' OR TypeName = 'Pop Up' OR TypeName = 'Van' OR TypeName = 'Other')
+
+--Default Keys
+ALTER TABLE PAYMENT
+	ADD
+	DEFAULT GETDATE() FOR PayDate
+
+ALTER TABLE RESERVATION
+	ADD
+	DEFAULT 1 FOR ResNumAdults,
+	DEFAULT 0 FOR ResNumChildren,
+	DEFAULT 0 FOR ResNumPets,
+	DEFAULT GETDATE() FOR ResCreatedDate
