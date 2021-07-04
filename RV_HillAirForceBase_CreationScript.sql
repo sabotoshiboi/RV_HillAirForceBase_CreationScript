@@ -31,6 +31,11 @@ FILEGROWTH = 10%
 
 GO
 
+
+
+--Create Tables
+--------------------------------------------------------------------------------------------------------------------------
+
 USE RV_HillAirForceBase
 
 CREATE TABLE CUSTOMER(
@@ -57,47 +62,47 @@ CREATE TABLE CUSTOMER_PASSWORD(
 )
 
 CREATE TABLE DOD_AFFILIATION_TYPE(
-	DODAffiliationID	int	IDENTITY(1,1)	NOT NULL,
-	DODAffilationType	varchar(50)			NOT NULL,
+	DODAffiliationID		int	IDENTITY(1,1)	NOT NULL,
+	DODAffilationType		varchar(50)			NOT NULL,
 	CONSTRAINT PK_DODAffiliationID
 	PRIMARY KEY (DODAffiliationID)
 )
 
 CREATE TABLE LOCATION(
-	LocationID			int	IDENTITY(1,1)	NOT NULL,
-	LocationName		varchar(100)		NOT NULL,
-	LocationAddress1	varchar(150)		NOT NULL,
-	LocationAddress2	varchar(150)			NULL,
-	LocationCity		varchar(50)			NOT NULL,
-	LocationState		varchar(20)			NOT NULL,
-	LocationZip			varchar(10)			NOT NULL,
+	LocationID				int	IDENTITY(1,1)	NOT NULL,
+	LocationName			varchar(100)		NOT NULL,
+	LocationAddress1		varchar(150)		NOT NULL,
+	LocationAddress2		varchar(150)			NULL,
+	LocationCity			varchar(50)			NOT NULL,
+	LocationState			varchar(20)			NOT NULL,
+	LocationZip				varchar(10)			NOT NULL,
 	CONSTRAINT PK_LocationID
 	PRIMARY KEY (LocationID)
 )
 
 CREATE TABLE PAYMENT(
-	PayID				int IDENTITY(1,1)	NOT NULL,
-	PayDate				smalldatetime  		NOT NULL,
-	IsPaid				bit					NOT NULL,
-	ResID				int					NOT NULL,
-	PayTypeID			tinyint				NOT NULL,
-	CCReference			varchar(20)				NULL,
-	PayLastModifiedBy	varchar(10)				NULL,
-	PayLastModifiedDate	smalldatetime			NULL,
+	PayID					int IDENTITY(1,1)	NOT NULL,
+	PayDate					smalldatetime  		NOT NULL,
+	IsPaid					bit					NOT NULL,
+	ResID					int					NOT NULL,
+	PayTypeID				tinyint				NOT NULL,
+	CCReference				varchar(20)				NULL,
+	PayLastModifiedBy		varchar(10)				NULL,
+	PayLastModifiedDate		smalldatetime			NULL,
 	CONSTRAINT PK_PayID
 	PRIMARY KEY (PayID)
 )
 
 CREATE TABLE PAYMENT_REASON(
-	PayReasonID		int	IDENTITY(1,1)	NOT NULL,
-	PayReasonName	varchar(20)			NOT NULL,
+	PayReasonID				int	IDENTITY(1,1)	NOT NULL,
+	PayReasonName			varchar(20)			NOT NULL,
 	CONSTRAINT PK_PayReasonID
 	PRIMARY KEY (PayReasonID)
 )
 
 CREATE TABLE PAYMENT_TYPE(
-	PayTypeID	tinyint	IDENTITY(1,1)	NOT NULL,
-	PayType		varchar(11)				NOT NULL,
+	PayTypeID				tinyint	IDENTITY(1,1)	NOT NULL,
+	PayType					varchar(11)				NOT NULL,
 	CONSTRAINT PK_PayTypeID
 	PRIMARY KEY (PayTypeID)
 )
@@ -124,7 +129,7 @@ CREATE TABLE RESERVATION(
 )
 
 CREATE TABLE RESERVATION_STATUS(
-	ResStatusID			int	identity(1,1)	NOT NULL,
+	ResStatusID				int	identity(1,1)	NOT NULL,
 	ResStatusName			varchar(50)			NOT NULL,
 	ResStatusDescription	varchar(100)			NULL,
 	CONSTRAINT PK_ResStatusID
@@ -132,24 +137,24 @@ CREATE TABLE RESERVATION_STATUS(
 )
 
 CREATE TABLE SECURITY_ANSWER(
-	AnswerID		int	identity(1,1)	NOT NULL,
-	AnswerText		varchar(50)			NOT NULL,
-	CustID			int					NOT NULL,
-	QuestionID		tinyint				NOT NULL,
+	AnswerID				int	identity(1,1)	NOT NULL,
+	AnswerText				varchar(50)			NOT NULL,
+	CustID					int					NOT NULL,
+	QuestionID				tinyint				NOT NULL,
 	CONSTRAINT PK_AnswerID
 	PRIMARY KEY (AnswerID),
 )
 
 CREATE TABLE SECURITY_QUESTION(
-	QuestionID		tinyint	IDENTITY(1,1)	NOT NULL,
-	QuestionText	varchar(200)			NOT NULL,
+	QuestionID				tinyint	IDENTITY(1,1)	NOT NULL,
+	QuestionText			varchar(200)			NOT NULL,
 	CONSTRAINT PK_QuestionID
 	PRIMARY KEY (QuestionID)
 )
 
 CREATE TABLE SERVICE_STATUS_TYPE(
-	ServiceStatusID		int	IDENTITY(1,1)	NOT NULL,
-	ServiceStatusType	varchar(20)			NOT NULL,
+	ServiceStatusID			int	IDENTITY(1,1)	NOT NULL,
+	ServiceStatusType		varchar(20)			NOT NULL,
 	CONSTRAINT PK_ServiceStatusID
 	PRIMARY KEY (ServiceStatusID)
 )
@@ -192,12 +197,12 @@ CREATE TABLE SITE_RATE(
 )
 
 CREATE TABLE SPECIAL_EVENT(
-	EventID				int	IDENTITY(1,1)	NOT NULL,
-	EventName			varchar(50)			NOT NULL,
-	EventStartDate		smalldatetime		NOT NULL,
-	EventEndDate		smalldatetime		NOT NULL,
-	EventDescription	varchar(max)			NULL,
-	LocationID			int					NOT NULL,
+	EventID					int	IDENTITY(1,1)	NOT NULL,
+	EventName				varchar(50)			NOT NULL,
+	EventStartDate			smalldatetime		NOT NULL,
+	EventEndDate			smalldatetime		NOT NULL,
+	EventDescription		varchar(max)			NULL,
+	LocationID				int					NOT NULL,
 	CONSTRAINT PK_EventID
 	PRIMARY KEY (EventID),
 	CONSTRAINT FK_LocationIDSpecialEvent
@@ -205,16 +210,20 @@ CREATE TABLE SPECIAL_EVENT(
 )
 
 CREATE TABLE VEHICLE_TYPE(
-	TypeID			tinyint	IDENTITY(1,1)	NOT NULL,
-	TypeName		varchar(50)				NOT NULL,
-	TypeDescription	varchar(max)				NULL,
+	TypeID					tinyint	IDENTITY(1,1)	NOT NULL,
+	TypeName				varchar(50)				NOT NULL,
+	TypeDescription			varchar(max)				NULL,
 	CONSTRAINT PK_TypeID
 	PRIMARY KEY (TypeID)
 )
 
 GO
---FK
---FK
+
+
+
+--Foreign Keys
+--------------------------------------------------------------------------------------------------------------------------
+
 ALTER TABLE CUSTOMER
 	ADD
 	CONSTRAINT FK_DODAffiliationID
@@ -226,27 +235,44 @@ ALTER TABLE RESERVATION
 	ADD
 	CONSTRAINT FK_VehicleTypeID
 	FOREIGN KEY (VehicleTypeID) REFERENCES VEHICLE_TYPE (TypeID),
-	CONSTRAINT FK_CustIDRes
+	CONSTRAINT FK_CustID
 	FOREIGN KEY (CustID) REFERENCES CUSTOMER (CustID),
 	CONSTRAINT FK_SiteID
 	FOREIGN KEY (SiteID) REFERENCES SITE (SiteID),
 	CONSTRAINT FK_ResStatusID
 	FOREIGN KEY (ResStatusID) REFERENCES RESERVATION_STATUS (ResStatusID)
 
-ALTER TABLE SECURITY_QUESTION
+ALTER TABLE SECURITY_ANSWER
 	ADD
 	CONSTRAINT FK_QuestionID
-	FOREIGN KEY (QuestionID) REFERENCES SECURITY_QUESTION (QuestionID) 
+	FOREIGN KEY (CustID) REFERENCES CustEmail (CustID)
+	CONSTRAINT FK_QuestionID
+	FOREIGN KEY (QuestionID) REFERENCES SECURITY_QUESTION (QuestionID)
 
 ALTER TABLE SITE
 	ADD
-	CONSTRAINT FK_SiteCategoryIDSite
-	FOREIGN KEY (SiteCategoryID) REFERENCES SITE_CATEGORY (SiteCategoryID) 
+	CONSTRAINT FK_SiteCategoryID
+	FOREIGN KEY (SiteCategoryID) REFERENCES SITE_CATEGORY (SiteCategoryID)
+
+GO
 
 --Check Constraints
+--------------------------------------------------------------------------------------------------------------------------
+
+--This is not good to check on this end for multiple reasons, but this is a simple check
+ALTER TABLE CUSTOMER
+	ADD
+	CONSTRAINT CK_InvalidEmail
+	CHECK (CustEmail like '%@%')
+
+ALTER TABLE DOD_AFFILIATION_TYPE
+	ADD
+	CONSTRAINT CK_ImproperDODTag
+	CHECK (DODAffilationType = 'Army' OR DODAffilationType = 'Air Force' OR DODAffilationType = 'Navy' OR DODAffilationType = 'Marines' OR DODAffilationType = 'Coast Guard')
+
 ALTER TABLE PAYMENT_TYPE
 	ADD
-	CONSTRAINT CK_InproperPaymentType
+	CONSTRAINT CK_ImproperPaymentType
 	CHECK (PayType = 'Check' OR PayType = 'Cash' OR PayType = 'Card')
 
 ALTER TABLE RESERVATION
@@ -255,30 +281,24 @@ ALTER TABLE RESERVATION
 	CONSTRAINT CK_TooLongOfStay
 	CHECK (DATEDIFF(day, ResStartDate, ResEndDate) > 15 AND (ResStartDate BETWEEN '04-15' AND '10-15' OR ResEndDate BETWEEN '04-15' AND '10-15')),
 	CONSTRAINT CK_TooManyPets
-	CHECK (ResNumPets <= 2)
-
-ALTER TABLE DOD_AFFILIATION_TYPE
-	ADD
-	CONSTRAINT CK_InproperDODTag
-	CHECK (DODAffilationType = 'Army' OR DODAffilationType = 'Air Force' OR DODAffilationType = 'Navy' OR DODAffilationType = 'Marines' OR DODAffilationType = 'Coast Guard')
+	CHECK (ResNumPets < 2)
 
 ALTER TABLE SERVICE_STATUS_TYPE
 	ADD
-	CONSTRAINT CK_InproperServiceStatus
+	CONSTRAINT CK_ImproperServiceStatus
 	CHECK (ServiceStatusType = 'Active' OR ServiceStatusType = 'Retired' OR ServiceStatusType = 'Reserves' OR ServiceStatusType = 'PCS')
-
---This is not good to check on this end for multiple reasons, but this is a simple check
-ALTER TABLE CUSTOMER
-	ADD
-	CONSTRAINT CK_InvalidEmail
-	CHECK (CustEmail like '%@%')
 
 ALTER TABLE VEHICLE_TYPE
 	ADD
-	CONSTRAINT CK_InproperVehicleType
+	CONSTRAINT CK_ImproperVehicleType
 	CHECK (TypeName = 'Motor Home' OR TypeName = 'Travel Trailer' OR TypeName = '5th Wheel' OR TypeName = 'Pop Up' OR TypeName = 'Van' OR TypeName = 'Other')
 
+GO
+
+
 --Default Keys
+--------------------------------------------------------------------------------------------------------------------------
+
 ALTER TABLE PAYMENT
 	ADD
 	DEFAULT GETDATE() FOR PayDate
@@ -289,3 +309,5 @@ ALTER TABLE RESERVATION
 	DEFAULT 0 FOR ResNumChildren,
 	DEFAULT 0 FOR ResNumPets,
 	DEFAULT GETDATE() FOR ResCreatedDate
+
+GO
