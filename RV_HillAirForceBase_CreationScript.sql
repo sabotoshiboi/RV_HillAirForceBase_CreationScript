@@ -42,19 +42,25 @@ CREATE TABLE CUSTOMER(
 	CustLastModifiedBy		varchar(10)					NULL,
 	CustLastModifiedDate	smalldatetime				NULL,
 	ServiceStatusID			int						NOT NULL,
-	DODAffiliationID		int						NOT NULL
+	DODAffiliationID		int						NOT NULL,
+	CONSTRAINT PK_CustID
+	PRIMARY KEY (CustID)
 )
 
 CREATE TABLE CUSTOMER_PASSWORD(
 	CustID					int				NOT NULL,
 	Password				varchar(40)		NOT NULL,
 	Active					bit				NOT NULL,
-	PasswordAssignedDate	smalldatetime	NOT NULL
+	PasswordAssignedDate	smalldatetime	NOT NULL,
+	CONSTRAINT FK_CustID
+	FOREIGN KEY (CustID) REFERENCES CUSTOMER (CustID) 
 )
 
 CREATE TABLE DOD_AFFILIATION_TYPE(
 	DODAffiliationID	int	IDENTITY(1,1)	NOT NULL,
-	DODAffilationType	varchar(50)			NOT NULL
+	DODAffilationType	varchar(50)			NOT NULL,
+	CONSTRAINT PK_DODAffiliationID
+	PRIMARY KEY (DODAffiliationID)
 )
 
 CREATE TABLE LOCATION(
@@ -64,7 +70,9 @@ CREATE TABLE LOCATION(
 	LocationAddress2	varchar(150)			NULL,
 	LocationCity		varchar(50)			NOT NULL,
 	LocationState		varchar(20)			NOT NULL,
-	LocationZip			varchar(10)			NOT NULL
+	LocationZip			varchar(10)			NOT NULL,
+	CONSTRAINT PK_LocationID
+	PRIMARY KEY (LocationID)
 )
 
 CREATE TABLE PAYMENT(
@@ -75,17 +83,23 @@ CREATE TABLE PAYMENT(
 	PayTypeID			tinyint				NOT NULL,
 	CCReference			varchar(20)				NULL,
 	PayLastModifiedBy	varchar(10)				NULL,
-	PayLastModifiedDate	smalldatetime			NULL
+	PayLastModifiedDate	smalldatetime			NULL,
+	CONSTRAINT PK_PayID
+	PRIMARY KEY (PayID)
 )
 
 CREATE TABLE PAYMENT_REASON(
 	PayReasonID		int	IDENTITY(1,1)	NOT NULL,
-	PayReasonName	varchar(20)			NOT NULL
+	PayReasonName	varchar(20)			NOT NULL,
+	CONSTRAINT PK_PayReasonID
+	PRIMARY KEY (PayReasonID)
 )
 
 CREATE TABLE PAYMENT_TYPE(
 	PayTypeID	tinyint	IDENTITY(1,1)	NOT NULL,
-	PayType		varchar(11)				NOT NULL
+	PayType		varchar(11)				NOT NULL,
+	CONSTRAINT PK_PayTypeID
+	PRIMARY KEY (PayTypeID)
 )
 
 CREATE TABLE RESERVATION(
@@ -104,30 +118,40 @@ CREATE TABLE RESERVATION(
 	VehicleTypeID			tinyint				NOT	NULL,
 	CustID					int					NOT NULL,
 	SiteID					tinyint				NOT NULL,
-	ResStatusID				int					NOT NULL
+	ResStatusID				int					NOT NULL,
+	CONSTRAINT PK_ResID
+	PRIMARY KEY (ResID)
 )
 
 CREATE TABLE RESERVATION_STATUS(
 	ResStatusID			int	identity(1,1)	NOT NULL,
 	ResStatusName			varchar(50)			NOT NULL,
-	ResStatusDescription	varchar(100)			NULL
+	ResStatusDescription	varchar(100)			NULL,
+	CONSTRAINT PK_ResStatusID
+	PRIMARY KEY (ResStatusID)
 )
 
 CREATE TABLE SECURITY_ANSWER(
 	AnswerID		int	identity(1,1)	NOT NULL,
 	AnswerText		varchar(50)			NOT NULL,
 	CustID			int					NOT NULL,
-	QuestionID		tinyint				NOT NULL
+	QuestionID		tinyint				NOT NULL,
+	CONSTRAINT PK_AnswerID
+	PRIMARY KEY (AnswerID),
 )
 
 CREATE TABLE SECURITY_QUESTION(
 	QuestionID		tinyint	IDENTITY(1,1)	NOT NULL,
-	QuestionText	varchar(200)			NOT NULL
+	QuestionText	varchar(200)			NOT NULL,
+	CONSTRAINT PK_QuestionID
+	PRIMARY KEY (QuestionID)
 )
 
 CREATE TABLE SERVICE_STATUS_TYPE(
 	ServiceStatusID		int	IDENTITY(1,1)	NOT NULL,
-	ServiceStatusType	varchar(20)			NOT NULL
+	ServiceStatusType	varchar(20)			NOT NULL,
+	CONSTRAINT PK_ServiceStatusID
+	PRIMARY KEY (ServiceStatusID)
 )
 
 CREATE TABLE SITE(
@@ -137,14 +161,20 @@ CREATE TABLE SITE(
 	SiteDescription			varchar(max)				NULL,
 	SiteCategoryID			tinyint					NOT NULL,
 	SiteLastModifiedBy		varchar(10)					NULL,
-	SiteLastModifiedDate	smalldatetime				NULL
+	SiteLastModifiedDate	smalldatetime				NULL,
+	CONSTRAINT PK_SiteID
+	PRIMARY KEY (SiteID)
 )
 
 CREATE TABLE SITE_CATEGORY(
 	SiteCategoryID			tinyint	IDENTITY(1,1)	NOT NULL,
 	SiteCategoryName		varchar(50)				NOT NULL,
 	SiteCategoryDescription	varchar(max)				NULL,
-	LocationID				int						NOT NULL
+	LocationID				int						NOT NULL,
+	CONSTRAINT PK_SiteCategoryID
+	PRIMARY KEY (SiteCategoryID),
+	CONSTRAINT FK_LocationID
+	FOREIGN KEY (LocationID) REFERENCES LOCATION (LocationID) 
 )
 
 CREATE TABLE SITE_RATE(
@@ -154,7 +184,11 @@ CREATE TABLE SITE_RATE(
 	RateEndDate				smalldatetime		NOT NULL,
 	RateLastModifiedBy		varchar(50)				NULL,
 	RateLastModifiedDate	smalldatetime			NULL,
-	SiteCategoryID			tinyint				NOT NULL
+	SiteCategoryID			tinyint				NOT NULL,
+	CONSTRAINT PK_RateID
+	PRIMARY KEY (RateID),
+	CONSTRAINT FK_SiteCategoryID
+	FOREIGN KEY (SiteCategoryID) REFERENCES SITE_CATEGORY (SiteCategoryID) 
 )
 
 CREATE TABLE SPECIAL_EVENT(
@@ -163,16 +197,52 @@ CREATE TABLE SPECIAL_EVENT(
 	EventStartDate		smalldatetime		NOT NULL,
 	EventEndDate		smalldatetime		NOT NULL,
 	EventDescription	varchar(max)			NULL,
-	LocationID			int					NOT NULL
+	LocationID			int					NOT NULL,
+	CONSTRAINT PK_EventID
+	PRIMARY KEY (EventID),
+	CONSTRAINT FK_LocationIDSpecialEvent
+	FOREIGN KEY (LocationID) REFERENCES LOCATION (LocationID) 
 )
 
 CREATE TABLE VEHICLE_TYPE(
 	TypeID			tinyint	IDENTITY(1,1)	NOT NULL,
 	TypeName		varchar(50)				NOT NULL,
-	TypeDescription	varchar(max)				NULL
+	TypeDescription	varchar(max)				NULL,
+	CONSTRAINT PK_TypeID
+	PRIMARY KEY (TypeID)
 )
 
 GO
+--FK
+--FK
+ALTER TABLE CUSTOMER
+	ADD
+	CONSTRAINT FK_DODAffiliationID
+	FOREIGN KEY (DODAffiliationID) REFERENCES DOD_AFFILIATION_TYPE (DODAffiliationID),
+	CONSTRAINT FK_ServiceStatusID
+	FOREIGN KEY (ServiceStatusID) REFERENCES SERVICE_STATUS_TYPE (ServiceStatusID) 
+
+ALTER TABLE RESERVATION
+	ADD
+	CONSTRAINT FK_VehicleTypeID
+	FOREIGN KEY (VehicleTypeID) REFERENCES VEHICLE_TYPE (TypeID),
+	CONSTRAINT FK_CustIDRes
+	FOREIGN KEY (CustID) REFERENCES CUSTOMER (CustID),
+	CONSTRAINT FK_SiteID
+	FOREIGN KEY (SiteID) REFERENCES SITE (SiteID),
+	CONSTRAINT FK_ResStatusID
+	FOREIGN KEY (ResStatusID) REFERENCES RESERVATION_STATUS (ResStatusID)
+
+ALTER TABLE SECURITY_QUESTION
+	ADD
+	CONSTRAINT FK_QuestionID
+	FOREIGN KEY (QuestionID) REFERENCES SECURITY_QUESTION (QuestionID) 
+
+ALTER TABLE SITE
+	ADD
+	CONSTRAINT FK_SiteCategoryIDSite
+	FOREIGN KEY (SiteCategoryID) REFERENCES SITE_CATEGORY (SiteCategoryID) 
+
 --Check Constraints
 ALTER TABLE PAYMENT_TYPE
 	ADD
