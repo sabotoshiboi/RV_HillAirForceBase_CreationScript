@@ -55,7 +55,7 @@ INSERT INTO PAYMENT_TYPE
 (
  [PayType]
 )
-VALUES ('Credit Card'), ('Cash'), ('Check')
+VALUES ('Card'), ('Cash'), ('Check')
 
 GO
 

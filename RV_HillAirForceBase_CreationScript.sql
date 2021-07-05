@@ -11,7 +11,7 @@ ON PRIMARY
 
 (
 NAME = 'RV_HillAirForceBase',
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\RV_HillAirForceBase.mdf', --Change to your own directory
+FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.CS3550\MSSQL\DATA\RV_HillAirForceBase.mdf', --Change to your own directory
 --FILENAME LOCAL
 SIZE = 12MB,
 MAXSIZE = 50MB,
@@ -22,7 +22,7 @@ LOG ON
 
 (
 NAME = 'RV_HillAirForceBase_Log',
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\RV_HillAirForceBase.ldf', --Change to your own directory
+FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.CS3550\MSSQL\DATA\RV_HillAirForceBase.ldf', --Change to your own directory
 --FILENAME LOCAL
 SIZE = 12MB,
 MAXSIZE = 50MB,
@@ -53,10 +53,13 @@ CREATE TABLE CUSTOMER(
 )
 
 CREATE TABLE CUSTOMER_PASSWORD(
-	CustID					int				NOT NULL,
-	Password				varchar(40)		NOT NULL,
-	Active					bit				NOT NULL,
-	PasswordAssignedDate	smalldatetime	NOT NULL,
+	CustPassID				int IDENTITY(1,1)		NOT NULL,
+	CustID					int						NOT NULL,
+	Password				varchar(40)				NOT NULL,
+	Active					bit						NOT NULL,
+	PasswordAssignedDate	smalldatetime			NOT NULL,
+	CONSTRAINT PK_CustPassID
+	PRIMARY KEY (CustPassID),
 	CONSTRAINT FK_CustID
 	FOREIGN KEY (CustID) REFERENCES CUSTOMER (CustID) 
 )
@@ -83,12 +86,14 @@ CREATE TABLE LOCATION(
 CREATE TABLE PAYMENT(
 	PayID					int IDENTITY(1,1)	NOT NULL,
 	PayDate					smalldatetime  		NOT NULL,
+	PayTotalCost			smallmoney			NOT NULL,
 	IsPaid					bit					NOT NULL,
-	ResID					int					NOT NULL,
-	PayTypeID				tinyint				NOT NULL,
 	CCReference				varchar(20)				NULL,
 	PayLastModifiedBy		varchar(10)				NULL,
 	PayLastModifiedDate		smalldatetime			NULL,
+	ResID					int					NOT NULL,
+	ReasonID				int					NOT NULL,
+	PayTypeID				tinyint				NOT NULL,
 	CONSTRAINT PK_PayID
 	PRIMARY KEY (PayID)
 )
@@ -235,7 +240,7 @@ ALTER TABLE RESERVATION
 	ADD
 	CONSTRAINT FK_VehicleTypeID
 	FOREIGN KEY (VehicleTypeID) REFERENCES VEHICLE_TYPE (TypeID),
-	CONSTRAINT FK_CustID
+	CONSTRAINT FK_CustID_2
 	FOREIGN KEY (CustID) REFERENCES CUSTOMER (CustID),
 	CONSTRAINT FK_SiteID
 	FOREIGN KEY (SiteID) REFERENCES SITE (SiteID),
@@ -244,16 +249,24 @@ ALTER TABLE RESERVATION
 
 ALTER TABLE SECURITY_ANSWER
 	ADD
-	CONSTRAINT FK_QuestionID
-	FOREIGN KEY (CustID) REFERENCES CustEmail (CustID)
+	CONSTRAINT FK_CustID_3
+	FOREIGN KEY (CustID) REFERENCES CUSTOMER (CustID),
 	CONSTRAINT FK_QuestionID
 	FOREIGN KEY (QuestionID) REFERENCES SECURITY_QUESTION (QuestionID)
 
 ALTER TABLE SITE
 	ADD
-	CONSTRAINT FK_SiteCategoryID
+	CONSTRAINT FK_SiteCategoryID_2
 	FOREIGN KEY (SiteCategoryID) REFERENCES SITE_CATEGORY (SiteCategoryID)
 
+ALTER TABLE PAYMENT
+	ADD
+	CONSTRAINT FK_ResID
+	FOREIGN KEY (ResID) REFERENCES RESERVATION (ResID),
+	CONSTRAINT FK_ReasonID
+	FOREIGN KEY (ReasonID) REFERENCES PAYMENT_REASON (PayReasonID),
+	CONSTRAINT FK_PayTypeID
+	FOREIGN KEY (PayTypeID) REFERENCES PAYMENT_TYPE (PayTypeID)
 GO
 
 --Check Constraints
@@ -279,7 +292,7 @@ ALTER TABLE RESERVATION
 	ADD
 	--Not sure if this one will work
 	CONSTRAINT CK_TooLongOfStay
-	CHECK (DATEDIFF(day, ResStartDate, ResEndDate) > 15 AND (ResStartDate BETWEEN '04-15' AND '10-15' OR ResEndDate BETWEEN '04-15' AND '10-15')),
+	CHECK ((DATEDIFF(day, ResStartDate, ResEndDate) >= 15 AND (ResStartDate BETWEEN '04-15' AND '10-15') OR ResEndDate BETWEEN '04-16' AND '10-14')),
 	CONSTRAINT CK_TooManyPets
 	CHECK (ResNumPets < 2)
 
