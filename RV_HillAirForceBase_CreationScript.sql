@@ -276,7 +276,7 @@ GO
 ALTER TABLE CUSTOMER
 	ADD
 	CONSTRAINT CK_InvalidEmail
-	CHECK (CustEmail like '%@%')
+	CHECK (CustEmail like '%_@__%.__%')
 
 ALTER TABLE DOD_AFFILIATION_TYPE
 	ADD
