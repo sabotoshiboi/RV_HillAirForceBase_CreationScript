@@ -1,0 +1,10 @@
+EventID|EventName|EventStateDate|EventEndDate|EventDescription|LocationID
+|New Years Day|2021-01-01 01:00:00|2021-01-01 23:59:59|New Years Day|1
+|New Years Day|2021-01-01 01:00:00|2021-01-01 23:59:59|New Years Day|2
+|New Years Day|2021-01-01 01:00:00|2021-01-01 23:59:59|New Years Day|3
+|Independence Day|2021-07-04 01:00:00|2021-07-04 23:59:59|4th of July Celebration Festivities, Air Show|2
+|Independence Day|2021-07-04 01:00:00|2021-07-04 23:59:59|4th of July Celebration Festivities, Air Show|1
+|Independence Day|2021-07-04 01:00:00|2021-07-04 23:59:59|4th of July Celebration Festivities, Air Show|3
+|Conference Of the Campers|2021-08-14 01:00:00|2021-08-21 23:59:59|A week of conferencing campers discussing Area 51 Secrets|3
+|Winter Holiday Weekend|2021-12-24 01:00:00|2021-12-27 23:59:59|Christmas Weekend|1
+|Winter Holiday Weekend|2021-12-24 01:00:00|2021-12-27 23:59:59|Christmas Weekend|2

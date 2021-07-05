@@ -1,0 +1,4 @@
+LocationID|LocationName|LocationAddress1|LocationAddress2|LocationCity|LocationState|LocationZip
+|HillAirForce NW Center |7981 Georgia Street|NW Corner|Hill AFB|Utah|84056
+|HillAirForce SE Center |7981 SE Georgia Street|SE Corner|Hill AFB|Utah|84056
+|Area 51|Area 51||SecretBase|Nevada|89017

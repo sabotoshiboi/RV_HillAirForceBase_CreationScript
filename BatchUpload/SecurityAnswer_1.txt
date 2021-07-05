@@ -1,0 +1,6 @@
+AnswerID|AnswerText|CustID|QuestionID
+|Human Dave|7|1
+|UFO Model 4.1|7|2
+|Space Rocks|7|3
+|Meow|8|1
+|Impala|5|2

@@ -1,0 +1,10 @@
+SiteID|SiteNumber|SiteLength|SiteDescription|SiteCategoryID|SiteLastModifiedBy|SiteLastModifiedDate
+|001|46|A Moderate camping space for odd length vehicles|2|TLA|2021-07-05 11:59:59
+|020|27|Standard 27' camping space|3||
+|041|10|Small 10' camping space for dry storage|4|TS|2021-07-05 11:59:59
+|12A|46|Large camping space for larger vehicle|5||2021-07-05 11:59:59
+|32B|27|Standard 27' camping space|3|TLA|
+|07C|27|Standard 27' camping space|6||
+|12-3A|55|Large camping space for larger vehicle|9||
+|3Z-XY|27|Standard 27' dry storage lot space|7||
+|41i3N|99|Built to hold standard UFOs (deny existence if asked)|8|JK|2021-07-04 12:00:00

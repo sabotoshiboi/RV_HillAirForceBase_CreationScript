@@ -1,0 +1,5 @@
+PayID|PayDate|PayTotalCost|IsPaid|CCReference|PayLastModifiedBy|PayLastModifiedDate|ResID|ReasonID|PayTypeID
+|2021-07-05 12:25:00|1121.23|1|12|LA|2021-07-01 12:00:00|1|1|1
+|2021-01-01 08:00:00|2002.50|0||AL||2|2|2
+|2021-06-01 10:10:00|534.99|1|||2021-07-05 12:00:00|3|3|3
+|2021-06-01 11:17:34|1623.23|0||||4|1|2

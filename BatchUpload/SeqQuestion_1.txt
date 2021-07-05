@@ -1,0 +1,4 @@
+QuestionID|QuestionText
+|What was the name of your first pet?
+|What was the make of your first car?
+|What was your favorite food as a child?

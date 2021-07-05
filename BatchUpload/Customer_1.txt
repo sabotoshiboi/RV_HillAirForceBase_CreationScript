@@ -1,0 +1,8 @@
+CustID|CustFirstName|CustLastName|CustEmail|CustPhone|CustLastModifiedBy|CustLastModifiedBy|ServiceStatusID|DODAffiliationID
+|Newman|Justin|justinnewman@mail.weber.edu|801-555-555|TLA|2021-07-04 12:10:00|1|2
+|Barnes|Tosh|toshbarnes@mail.weber.edu|805-555-5555||2021-07-05 9:58:10|2|4
+|Langston|Austin|austinlangston@mail.weber.edu|855-555-5555|MM||3|1
+|Coombs|Brendan|brendancoombs@mail.weber.edu|555-555-5555|||3|6
+|Austin|Tiffany|tiffanyaustin@mail.weber.edu|800-555-5555|KL|2021-07-03 13:14:16|4|3
+|Mister|Alien|misteralien@area51.gov|555-55A-LIEN|CIA|2021-06-08 23:10:10|2|2
+|Richard|Fry|rfry@weber.edu|555-TEA-CHER|RF|2021-01-01 20:00:10|1|5

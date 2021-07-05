@@ -1,0 +1,10 @@
+SiteCategoryID|SiteCategoryName|SiteCategoryDescription|LocationID
+|DryStorage|A dry storage site to store dry goods|1
+|Extended Length|A site that allows for extra large vehicles|1
+|Standard Length|A site that allows for standard sizes vehicles|1
+|DryStorage|A dry storage site to store dry goods|2
+|Extended Length|A site that allows for extra large vehicles|2
+|Standard Length|A site that allows for standard sizes vehicles|2
+|DryStorage|A dry storage site to store dry goods|3
+|Extended Length|A site that allows for extra large vehicles|3
+|Standard Length|A site that allows for standard sizes vehicles|3
