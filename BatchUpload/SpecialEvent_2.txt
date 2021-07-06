@@ -1,0 +1,10 @@
+EventID|EventName|EventStateDate|EventEndDate|EventDescription|LocationID
+|Easter Weekend|2021-04-02 00:00:00|2021-04-04 23:59:59|Easter Weekend|4
+|Easter Weekend|2021-04-02 00:00:00|2021-04-04 23:59:59|Easter Weekend|5
+|Easter Weekend|2021-04-02 00:00:00|2021-04-04 23:59:59|Easter Weekend|6
+|Spooky Weekend|2021-10-29 00:00:00|2021-10-31 23:59:59|Halloween Weekend|4
+|Spooky Weekend|2021-10-29 00:00:00|2021-10-31 23:59:59|Halloween Weekend|5
+|Spooky Weekend|2021-10-29 00:00:00|2021-10-31 23:59:59|Halloween Weekend|6
+|Memorial Weekend|2021-05-28 00:00:00|2021-05-31 23:59:59|Memorial Day Weekend|4
+|Memorial Weekend|2021-05-28 00:00:00|2021-05-31 23:59:59|Memorial Day Weekend|5
+|Memorial Weekend|2021-05-28 00:00:00|2021-05-31 23:59:59|Memorial Day Weekend|6

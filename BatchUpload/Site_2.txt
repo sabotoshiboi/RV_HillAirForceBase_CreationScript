@@ -1,0 +1,4 @@
+SiteID|SiteNumber|SiteLength|SiteDescription|SiteCategoryID|SiteLastModifiedBy|SiteLastModifiedDate
+|007|27|27" site length|3|BAC|2021-07-02 07:07:07
+|011|50|50" site length|2||2021-07-01 15:15:15
+|024|75|75" site length|2|BAC|2021-07-04 10:10:10

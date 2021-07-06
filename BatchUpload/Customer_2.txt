@@ -1,0 +1,8 @@
+CustID|CustFirstName|CustLastName|CustEmail|CustPhone|CustLastModifiedBy|CustLastModifiedDate|ServiceStatusID|DODAffiliationID
+|Bob|Ross|BobRoss@artists.com|123-456-7890|Military|7-5-2021 17:11|2|2
+|Clark|Kent|ClarkKent@imjustanormalguy.com|321-552-0004|Superman|7-11-2020 2:13|2|1
+|Jimmy|Neutron|BoyGenius@alienstookmyparents.com|111-135-4047|Aliens|6-14-2021 23:02|4|3
+|Bob|Marley|BobMarley@music.com|421-622-6541|Jamaica|7-1-2021 1:11|1|4
+|Black|Widow|BlackWidow@avengers.com|541-154-8374|Marvel||3|1
+|James|Bond|BondJamesBond@bond.com|007-007-0007|||4|1
+|Judge|Judy|ImYourJudge@court.com|111-121-2212|US|2021-07-02 11:07:36|2|5

@@ -156,6 +156,46 @@ WITH (FIELDTERMINATOR='|', FIRSTROW=2)
 BULK INSERT PAYMENT FROM 'C:\BatchUpload\Payment_1.txt'
 WITH (FIELDTERMINATOR='|', FIRSTROW=2)
 
+--------------------------
+--Insert Data Part 2 (BAC)
+--------------------------
+
+--Same idea about updating the file paths that was mentioned by Tif above as well as the temp tables
+
+BULK INSERT LOCATION FROM 'C:\BatchUpload\Location_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT SECURITY_QUESTION FROM 'C:\BatchUpload\SeqQuestion_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT SPECIAL_EVENT FROM 'C:\BatchUpload\SpecialEvent_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT SITE_CATEGORY FROM 'C:\BatchUpload\SiteCategory_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT SITE_RATE FROM 'C:\BatchUpload\Site_Rate_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT SITE FROM 'C:\BatchUpload\Site_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT CUSTOMER FROM 'C:\BatchUpload\Customer_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT SECURITY_ANSWER FROM 'C:\BatchUpload\SecurityAnswer_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT CUSTOMER_PASSWORD FROM 'C:\BatchUpload\CustPassword_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT RESERVATION FROM 'C:\BatchUpload\Reservation_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+BULK INSERT PAYMENT FROM 'C:\BatchUpload\Payment_2.txt'
+WITH (FIELDTERMINATOR='|', FIRSTROW=2)
+
+--Select statements Tif wrote to show all of the data in each table:
 
 SELECT * FROM CUSTOMER
 SELECT * FROM CUSTOMER_PASSWORD

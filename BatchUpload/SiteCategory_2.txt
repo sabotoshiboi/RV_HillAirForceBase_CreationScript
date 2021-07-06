@@ -1,0 +1,7 @@
+SiteCategoryID|SiteCategoryName|SiteCategoryDescription|LocationID
+|Small Dry Storage|Small site for dry storage|4
+|Standard Dry Storage|A standard site for dry storage|4
+|Extended Dry Storage|A large site for dry storage|4
+|Small Length|Small site for vehicles|5
+|Standard Length|Medium site for vehicles|5
+|Long Length|Long site for vehicles|5

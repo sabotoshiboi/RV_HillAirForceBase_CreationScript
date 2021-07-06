@@ -1,0 +1,4 @@
+AnswerID|AnswerText|CustID|QuestionID
+|To seek the holy grail|10|5
+|Blue|11|6
+|Sir Lancelot|12|1

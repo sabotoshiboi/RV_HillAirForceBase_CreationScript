@@ -1,0 +1,4 @@
+LocationID|LocationName|LocationAddress1|LocationAddress2|LocationCity|LocationState|LocationZip
+|Travis Air Force Base |400 Brennan Cir||Travis AFB|California|94535
+|Scott Air Force Base |901 South Dr|Eastern|Scott AFB|Illinois|62225
+|Lackland Air Force Base |2230 Hughes Ave|JBSA|San Antonio|Texas|78236
