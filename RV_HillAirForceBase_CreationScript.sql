@@ -11,7 +11,7 @@ ON PRIMARY
 
 (
 NAME = 'RV_HillAirForceBase',
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\RV_HillAirForceBase.mdf', --Change to your own directory
+FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.CS3550\MSSQL\DATA\RV_HillAirForceBase.mdf', --Change to your own directory
 --FILENAME LOCAL
 SIZE = 12MB,
 MAXSIZE = 50MB,
@@ -22,7 +22,7 @@ LOG ON
 
 (
 NAME = 'RV_HillAirForceBase_Log',
-FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\RV_HillAirForceBase.ldf', --Change to your own directory
+FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL15.CS3550\MSSQL\DATA\RV_HillAirForceBase.ldf', --Change to your own directory
 --FILENAME LOCAL
 SIZE = 12MB,
 MAXSIZE = 50MB,
@@ -290,9 +290,6 @@ ALTER TABLE PAYMENT_TYPE
 
 ALTER TABLE RESERVATION
 	ADD
-	--Not sure if this one will work
-	CONSTRAINT CK_TooLongOfStay
-	CHECK ((DATEDIFF(day, ResStartDate, ResEndDate) <= 15 AND (ResStartDate BETWEEN '04-15' AND '10-15') OR ResEndDate BETWEEN '04-16' AND '10-14')),
 	CONSTRAINT CK_TooManyPets
 	CHECK (ResNumPets < 2)
 
