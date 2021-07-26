@@ -6,6 +6,7 @@ GO
 
 --Justin Newman
 --sp_cancel_reservation
+--accepts input param of @ReservationID
 --updates the RESERVATION record to have ResStatusID 2
 --updates the ResLastModifiedBy to the current SYSTEM_USER name (after 'DOMAIN\')
 --updates ResLastModifiedDate to GetDate()
