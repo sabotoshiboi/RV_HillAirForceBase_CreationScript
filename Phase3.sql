@@ -43,21 +43,21 @@ END
 
 GO
 
-BEGIN
+BEGIN TRAN
     EXEC sp_cancel_reservation
     @ReservationID = 1
-END
 
-SELECT ResStatusID, ResLastModifiedBy, ResLastModifiedDate
-FROM RESERVATION
-WHERE ResID = 1
+    SELECT ResStatusID, ResLastModifiedBy, ResLastModifiedDate
+    FROM RESERVATION
+    WHERE ResID = 1
+ROLLBACK
+
 
 --Justin Newman
 --sp_change_password
 --accepts input params of @newPassword and @customerID
 --creates a new record tied to the customer, deletes any existing inactive records more than 3 passwords old
 --deactivates the current active password
---
 
 DROP PROC IF EXISTS sp_change_password
 
@@ -105,10 +105,11 @@ BEGIN
 END
 GO
 
-
-EXEC  sp_change_password
-@newPassword = 'password2',
-@customerID = 7
+BEGIN TRAN
+    EXEC  sp_change_password
+    @newPassword = 'password2',
+    @customerID = 7
+ROLLBACK
 
 
 SELECT * FROM CUSTOMER_PASSWORD
@@ -118,6 +119,7 @@ WHERE CustID = 7
 
 --Justin Newman
 --fn_CheckSecurityQuestion :: Returns an answer if the security question is correct without displaying the correct answer
+
 DROP FUNCTION IF EXISTS fn_CheckSecurityQuestion
 
 GO
@@ -149,14 +151,15 @@ END
 
 GO
 
-SELECT dbo.fn_CheckSecurityQuestion(7,1,'Inhuman Dave') as 'Answer Attempt'
-SELECT dbo.fn_CheckSecurityQuestion(7,1,'Human Dave') as 'Answer Attempt'
+SELECT dbo.fn_CheckSecurityQuestion(7,1,'Inhuman Dave') as 'Incorrect Answer Attempt'
+SELECT dbo.fn_CheckSecurityQuestion(7,1,'Human Dave') as 'Correct Answer Attempt'
 
 
 --TRIGGERS----------------------------------------------------------------------------------------------------------------------------------------------------
 
 --Justin Newman
 --tr_Password_Check :: On creation, make sure new password is not one of most recent 3 old passwords
+
 DROP TRIGGER IF EXISTS [dbo].[tr_Password_Check];
 
 GO
@@ -182,9 +185,10 @@ END
 
 GO
 
-INSERT INTO CUSTOMER_PASSWORD(CustID, [Password], Active, [PasswordAssignedDate])
-VALUES(7, 'password', 1, GETDATE())
+BEGIN TRAN
+    SELECT [Password] FROM CUSTOMER_PASSWORD
+    WHERE CustID = 7
 
-
-SELECT [Password] FROM CUSTOMER_PASSWORD
-WHERE CustID = 7
+    INSERT INTO CUSTOMER_PASSWORD(CustID, [Password], Active, [PasswordAssignedDate])
+    VALUES(7, 'password', 1, GETDATE())
+ROLLBACK
