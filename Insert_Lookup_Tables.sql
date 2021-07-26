@@ -41,7 +41,7 @@ INSERT INTO PAYMENT_REASON
 (
  [PayReasonName]
 )
-VALUES ('Reservation Payment'), ('Damage'), ('Violation')
+VALUES ('Reservation Payment'), ('Damage'), ('Violation'),('Cancellation Refund')
 
 GO
 
