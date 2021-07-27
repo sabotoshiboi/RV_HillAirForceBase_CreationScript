@@ -12,19 +12,42 @@ CREATE PROC sp_charge_fee
 	@ReservationID	int,
 	@ReasonID		int,
 	@TotalCost		int,
-	@PayTypeID		int
+	@PayTypeID		int,
+	@CCReference	varchar(20) null
 
 AS
 	BEGIN
 
-	INSERT INTO Payment(PayDate, PayTotalCost, IsPaid, ResID, ReasonID, PayTypeID)
-	VALUES(GETDATE(), @TotalCost, 0, @ReservationID, @ReasonID, @PayTypeID)
+	IF ( (@PayTypeID = 1 AND @CCReference IS NOT NULL) OR (@PayTypeID != 1))
+		BEGIN
+		INSERT INTO Payment(PayDate, PayTotalCost, IsPaid, ResID, ReasonID, PayTypeID)
+		VALUES(GETDATE(), @TotalCost, 0, @ReservationID, @ReasonID, @PayTypeID)
 
-	PRINT 'Inserted new Payment to database'
+		PRINT 'Inserted new Payment to database'
+		END
+	ELSE 
+		BEGIN
+			PRINT 'PayTypeID Requires CCReference'
+		END
 
 	END
 
 GO
+
+SELECT * FROM PAYMENT_REASON
+EXEC sp_charge_fee 
+	@ReservationID = 1,
+	@ReasonID	   = 2,
+	@TotalCost	   = 1,
+	@PayTypeID	   = 2,
+	@CCReference   = null
+
+EXEC sp_charge_fee 
+	@ReservationID = 1,
+	@ReasonID	   = 2,
+	@TotalCost	   = 1,
+	@PayTypeID	   = 1,
+	@CCReference   = null
 
 -- fn_GetCustomerPayments :: Returns all receipts of customer payments and outstanding balances for a specific customer
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('dbo.fn_GetCustomerPayments') 
