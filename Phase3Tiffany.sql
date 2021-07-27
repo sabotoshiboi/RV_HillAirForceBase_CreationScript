@@ -159,8 +159,11 @@ ON LOCATION
 
 GO
 
+--This is a hopeful future index, with the idea that there would eventually be a large number of locations to manage
+--If the number of locations grows large enough, this will allow the company to do a quick search of its localized regions
+-- (Granted this may be better for the future)
 CREATE UNIQUE NONCLUSTERED INDEX IX_location_city
-ON LOCATION(LocationCity, LocationState, LocationName)
+ON LOCATION(LocationState, LocationCity, LocationName)
 
 GO
 
@@ -169,24 +172,23 @@ ON LOCATION
 
 GO
 
---descending so that active passwords are displayed first
+--This would be helpful with password searches against active and non active passwords for a given customer
+--Over time there will be a lot of passwords for a given customer, having this indexed will assist with password changes (and the associated checks)
+--that will be searching this table
 CREATE UNIQUE NONCLUSTERED INDEX IX_active_password
-ON CUSTOMER_PASSWORD(Active DESC, CustPassID)
+ON CUSTOMER_PASSWORD(CustPassID, Active DESC)
 
 GO
 
-DROP INDEX IF EXISTS IX_customer_name
-ON LOCATION
+DROP INDEX IF EXISTS IX_reservation_start
+ON Reservation
 
 GO
 
-IF EXISTS (SELECT name FROM sys.indexes WHERE name=N'IX_customer_name')
-	DROP INDEX IX_customer_name ON CUSTOMER
-
-GO
-
-CREATE UNIQUE NONCLUSTERED INDEX IX_customer_name
-ON CUSTOMER(CustLastName, CustFirstName)
+--A company would likely need to retrieve and review data concerning reservations over a select time frame
+--Because there will be a lot of reservations over a long period of time, having an filter method to sort through these queries will be beneficial to the comapny
+CREATE UNIQUE NONCLUSTERED INDEX IX_reservation_start
+ON Reservation(ResStartDate)
 
 GO
 
