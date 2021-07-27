@@ -44,7 +44,7 @@ AS
 				ON s.SiteCategoryID = sc.SiteCategoryID
 				JOIN Reservation as r
 				ON r.SiteID = s.SiteID
-				WHERE r.ResID = 9
+				WHERE r.ResID = @resID
 					AND
 					(
 						(r.ResEndDate >= se.EventStartDate AND r.ResEndDate <= se.EventEndDate)
