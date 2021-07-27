@@ -25,6 +25,9 @@ CREATE PROCEDURE sp_update_security_answer
 		WHERE sa.CustID = @CustomerID AND sq.QuestionID = @QuestionID
 	END
 
+exec sp_update_security_answer @customerID = 7, @QuestionID = 3, @AnswerText = 'I hope this works'
+select * from SECURITY_ANSWER
+
 /*
 fn_GetReservationHistory :: Returns the history of reservations in a specific time frame
 */
@@ -109,6 +112,15 @@ END
 
 go
 
+select *
+from RESERVATION
+
+Insert into RESERVATION
+values(1, 1, 1, 1, '2021-4-15', '2021-5-15', GETDATE(), 'meh', 22, 'tb', GETDATE(), 1, 1, 9, 1)
+
+select *
+from RESERVATION
+
 /*
 cursor_update_site_by_location :: Updates all the site numbers in a certain location. Used if the owner ever wants to change the numbering system.
 @location is what location you want the sites numbering system updated
@@ -163,11 +175,5 @@ select SiteID, SiteNumber, l.LocationID
 	JOIN LOCATION L ON L.LocationID = SC.LocationID
 	where l.LocationID = 1
 	
-select *
-from RESERVATION
 
-Insert into RESERVATION
-values(1, 1, 1, 1, '2021-4-15', '2021-5-15', GETDATE(), 'meh', 22, 'tb', GETDATE(), 1, 1, 9, 1)
 
-delete from RESERVATION
-where ResID = 11
