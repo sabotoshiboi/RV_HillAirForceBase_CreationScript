@@ -45,6 +45,8 @@ WHERE CustID = @CustomerID
 
 GO
 
+SELECT * FROM fn_GetCustomerPayments(1)
+
 -- tr_Payment_PayTypeID :: On creation (or, if not required - then update) - if payment PayTypeID is a card, require a CCReference to be filled in as well.
 DROP TRIGGER IF EXISTS dbo.tr_Payment_PayTypeID
 
@@ -68,8 +70,11 @@ AS
 	-- If just inserted
 	ELSE IF ((SELECT PayTypeID FROM inserted) = 1)
 	BEGIN
-		Raiserror ('Cannot insert, needs CCReference for card payments', 16, 1) 
-		ROLLBACK TRAN
+		IF ((SELECT CCReference FROM inserted) IS NULL)
+		BEGIN
+			Raiserror ('Cannot insert, needs CCReference for card payments', 16, 1) 
+			ROLLBACK TRAN
+		END
 	END
 
 GO
