@@ -65,6 +65,10 @@ CREATE FUNCTION dbo.fn_GetReservationHistory(@TimeBegin date, @TimeEnd date)
 
 	END
 GO
+
+select *
+from dbo.fn_GetReservationHistory('2021-09-15', '2021-12-15')
+
 /*
 tr_Limit_Reservation_Time :: On Reservation creation or an update to Reservation Start Date/ End Date, 
 verify that the reservation is limited to 15 days if between April 15 - Oct 15.  
@@ -84,9 +88,12 @@ BEGIN
 	IF EXISTS(SELECT *
 	FROM inserted i
 	
-	WHERE DATEPART(MONTH, i.ResStartDate) Between DATEPART(MONTH, '2021-4-15') AND DATEPART(MONTH, '2021-10-15')
-	AND DATEPART(MONTH, i.ResEndDate) Between DATEPART(MONTH,'2021-4-15') AND DATEPART(MONTH, '2021-10-15')
-	AND DATEDIFF(day, i.resstartdate, i.resenddate) < DATEDIFF(DAY, '2021-4-15', '2021-10-15')
+	WHERE --DATEPART(MONTH, i.ResStartDate) Between DATEPART(MONTH, '2021-4-15') AND DATEPART(MONTH, '2021-10-15')
+	--AND DATEPART(MONTH, i.ResEndDate) Between DATEPART(MONTH,'2021-4-15') AND DATEPART(MONTH, '2021-10-15')
+
+	DATEDIFF(day, '2021-1-1', i.ResStartDate) >= DATEDIFF(DAY, '2021-1-1', '2021-4-14')
+	AND DATEDIFF(day, '2021-1-1', i.ResStartDate) <= DATEDIFF(DAY, '2021-1-1', '2021-10-15')
+
 	AND DATEDIFF(day, i.ResStartDate, i.ResEndDate) > 15
 	)
 	BEGIN
@@ -104,38 +111,63 @@ go
 
 /*
 cursor_update_site_by_location :: Updates all the site numbers in a certain location. Used if the owner ever wants to change the numbering system.
+@location is what location you want the sites numbering system updated
+@increment is the differece between each site number
+@basenumber is what you want the new SiteNumber system to be based on.
 */
 
 
 
+declare @location int
+set @location = 1
+
 declare cursor_update_site_by_location cursor
 for
-	select distinct LocationID
-	from LOCATION
+	select distinct SiteID
+	from SITE S
+	JOIN SITE_CATEGORY SC ON SC.SiteCategoryID = S.SiteCategoryID
+	JOIN LOCATION L ON L.LocationID = SC.LocationID
+	WHERE SC.LocationID = @location
 GO
 
-
-declare @location int
 declare @increment int
 declare @basenumber int
+declare @sitenum varchar(max)
 
 SET @increment = 1
 SET @basenumber = 100
 open cursor_update_site_by_location
 
 fetch next from cursor_update_site_by_location
-into @location
+into @sitenum
 
 
 while @@FETCH_STATUS = 0
 begin
 	UPDATE SITE
-	set SiteNumber = @basenumber
+	set SiteNumber = Cast(@basenumber as Varchar)
+	where SiteID = @sitenum
 	set @basenumber = @basenumber + @increment
+
+	fetch next from cursor_update_site_by_location
+	into @sitenum
 end
 
 close cursor_update_site_by_location
 deallocate cursor_update_site_by_location
 GO
 
+select SiteID, SiteNumber, l.LocationID
+	from SITE S
+	JOIN SITE_CATEGORY SC ON SC.SiteCategoryID = S.SiteCategoryID
+	JOIN LOCATION L ON L.LocationID = SC.LocationID
+	where l.LocationID = 1
+	
+select *
+from RESERVATION
 
+Insert into RESERVATION
+values(1, 1, 1, 1, '2021-4-15', '2021-5-15', GETDATE(), 'meh', 22, 'tb', GETDATE(), 1, 1, 9, 1)
+
+delete from RESERVATION
+where ResID = 11
