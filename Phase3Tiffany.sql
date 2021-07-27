@@ -151,6 +151,47 @@ AS
 	END
 
 GO
+
+--Indexes 
+
+DROP INDEX IF EXISTS IX_location_city
+ON LOCATION
+
+GO
+
+--This is a hopeful future index, with the idea that there would eventually be a large number of locations to manage
+--If the number of locations grows large enough, this will allow the company to do a quick search of its localized regions
+-- (Granted this may be better for the future)
+CREATE UNIQUE NONCLUSTERED INDEX IX_location_city
+ON LOCATION(LocationState, LocationCity, LocationName)
+
+GO
+
+DROP INDEX IF EXISTS IX_active_password
+ON LOCATION
+
+GO
+
+--This would be helpful with password searches against active and non active passwords for a given customer
+--Over time there will be a lot of passwords for a given customer, having this indexed will assist with password changes (and the associated checks)
+--that will be searching this table
+CREATE UNIQUE NONCLUSTERED INDEX IX_active_password
+ON CUSTOMER_PASSWORD(CustPassID, Active DESC)
+
+GO
+
+DROP INDEX IF EXISTS IX_reservation_start
+ON Reservation
+
+GO
+
+--A company would likely need to retrieve and review data concerning reservations over a select time frame
+--Because there will be a lot of reservations over a long period of time, having an filter method to sort through these queries will be beneficial to the comapny
+CREATE UNIQUE NONCLUSTERED INDEX IX_reservation_start
+ON Reservation(ResStartDate)
+
+GO
+
 /* Test for tr_update_res_cancelled and sp_charge_cancellation -- uncomment to view
 
 SELECT * FROM RESERVATION
@@ -197,4 +238,4 @@ SELECT * FROM SPECIAL_EVENT
 --test for fn_GetCustomerHistory
 
 -- SELECT * FROM fn_GetCustomerHistory(7)
-				
+			
