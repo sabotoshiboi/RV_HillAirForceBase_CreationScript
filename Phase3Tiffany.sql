@@ -151,6 +151,45 @@ AS
 	END
 
 GO
+
+--Indexes 
+
+DROP INDEX IF EXISTS IX_location_city
+ON LOCATION
+
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_location_city
+ON LOCATION(LocationCity, LocationState, LocationName)
+
+GO
+
+DROP INDEX IF EXISTS IX_active_password
+ON LOCATION
+
+GO
+
+--descending so that active passwords are displayed first
+CREATE UNIQUE NONCLUSTERED INDEX IX_active_password
+ON CUSTOMER_PASSWORD(Active DESC, CustPassID)
+
+GO
+
+DROP INDEX IF EXISTS IX_customer_name
+ON LOCATION
+
+GO
+
+IF EXISTS (SELECT name FROM sys.indexes WHERE name=N'IX_customer_name')
+	DROP INDEX IX_customer_name ON CUSTOMER
+
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_customer_name
+ON CUSTOMER(CustLastName, CustFirstName)
+
+GO
+
 /* Test for tr_update_res_cancelled and sp_charge_cancellation -- uncomment to view
 
 SELECT * FROM RESERVATION
@@ -197,4 +236,4 @@ SELECT * FROM SPECIAL_EVENT
 --test for fn_GetCustomerHistory
 
 -- SELECT * FROM fn_GetCustomerHistory(7)
-				
+			
