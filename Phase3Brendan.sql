@@ -109,37 +109,46 @@ GO
 --When pets are more than zero, verify that ResAcknowledgeValidPets is set to 1.  
 --Otherwise, inform user that ResAcknowledgeValidPets must be done in order to bring pets to the site.
 
+--Delete upon existence
 IF OBJECT_ID ('tr_Update_Num_Pets','TR') IS NOT NULL
 	DROP TRIGGER tr_Update_Num_Pets;
 GO
 
+--Create Trigger
 Create Trigger tr_Update_Num_Pets
 ON RESERVATION
 AFTER INSERT, UPDATE
 AS
 DECLARE @Pets tinyint
+--In the case that there are pets
 IF EXISTS (SELECT *
 			FROM inserted i
 			LEFT JOIN RESERVATION r on i.ResID = r.ResID
 			WHERE r.ResNumPets > 0 AND r.ResAcknowledgeValidPets != 1)
 BEGIN
+
+--Error message about the pet acknowledgement
 RAISERROR ('Cannot complete until pet acknowledgement is done', 16, 1);
+--Rollsback the transaction
 ROLLBACK TRANSACTION;
 RETURN
 END
 
 
+--Test update, results in failure
 UPDATE RESERVATION
 SET ResNumPets = 1
 WHERE ResID = 2
 
 GO
 
+--Test update, succeeding
 UPDATE RESERVATION
 SET ResNumPets = 1, ResAcknowledgeValidPets = 1
 WHERE ResID = 5
 
 GO
 
+--Showing the update
 SELECT * FROM RESERVATION
 
