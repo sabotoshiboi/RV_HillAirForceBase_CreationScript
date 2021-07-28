@@ -44,7 +44,7 @@ AS
 				ON s.SiteCategoryID = sc.SiteCategoryID
 				JOIN Reservation as r
 				ON r.SiteID = s.SiteID
-				WHERE r.ResID = 9
+				WHERE r.ResID = @resID
 					AND
 					(
 						(r.ResEndDate >= se.EventStartDate AND r.ResEndDate <= se.EventEndDate)
@@ -192,7 +192,7 @@ ON Reservation(ResStartDate)
 
 GO
 
-/* Test for tr_update_res_cancelled and sp_charge_cancellation -- uncomment to view
+-- Test for tr_update_res_cancelled and sp_charge_cancellation -- uncomment to view
 
 SELECT * FROM RESERVATION
 SELECT * FROM SPECIAL_EVENT
@@ -201,23 +201,16 @@ GO
 
 UPDATE RESERVATION 
 SET ResStatusID = 2
-WHERE ResID = 1
+WHERE ResID = 7
 
 GO 
 
 SELECT * FROM RESERVATION
 SELECT * FROM PAYMENT
 
-*/
-
 --Test holiday
-/*
-UPDATE RESERVATION
-SET ResStatusID = 1
-WHERE ResID = 9
 
-SELECT * FROM RESERVATION
-SELECT * FROM PAYMENT
+GO
 
 INSERT INTO PAYMENT
 VALUES('2021-01-01', 1000, 1,NULL,NULL,NULL,9,1,NULL)
@@ -229,13 +222,7 @@ WHERE ResID = 9
 SELECT * FROM RESERVATION
 SELECT * FROM PAYMENT
 
-Select * FROM RESERVATION
-SELECT * FROM SITE
-SELECT * FROM SITE_CATEGORY
-SELECT * FROM SPECIAL_EVENT
-*/
-
 --test for fn_GetCustomerHistory
 
--- SELECT * FROM fn_GetCustomerHistory(7)
+SELECT * FROM fn_GetCustomerHistory(7)
 			

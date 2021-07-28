@@ -12,19 +12,42 @@ CREATE PROC sp_charge_fee
 	@ReservationID	int,
 	@ReasonID		int,
 	@TotalCost		int,
-	@PayTypeID		int
+	@PayTypeID		int,
+	@CCReference	varchar(20) null
 
 AS
 	BEGIN
 
-	INSERT INTO Payment(PayDate, PayTotalCost, IsPaid, ResID, ReasonID, PayTypeID)
-	VALUES(GETDATE(), @TotalCost, 0, @ReservationID, @ReasonID, @PayTypeID)
+	IF ( (@PayTypeID = 1 AND @CCReference IS NOT NULL) OR (@PayTypeID != 1))
+		BEGIN
+		INSERT INTO Payment(PayDate, PayTotalCost, IsPaid, ResID, ReasonID, PayTypeID)
+		VALUES(GETDATE(), @TotalCost, 0, @ReservationID, @ReasonID, @PayTypeID)
 
-	PRINT 'Inserted new Payment to database'
+		PRINT 'Inserted new Payment to database'
+		END
+	ELSE 
+		BEGIN
+			PRINT 'PayTypeID Requires CCReference'
+		END
 
 	END
 
 GO
+
+SELECT * FROM PAYMENT_REASON
+EXEC sp_charge_fee 
+	@ReservationID = 1,
+	@ReasonID	   = 2,
+	@TotalCost	   = 1,
+	@PayTypeID	   = 2,
+	@CCReference   = null
+
+EXEC sp_charge_fee 
+	@ReservationID = 1,
+	@ReasonID	   = 2,
+	@TotalCost	   = 1,
+	@PayTypeID	   = 1,
+	@CCReference   = null
 
 -- fn_GetCustomerPayments :: Returns all receipts of customer payments and outstanding balances for a specific customer
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('dbo.fn_GetCustomerPayments') 
@@ -44,6 +67,8 @@ LEFT JOIN RESERVATION on RESERVATION.ResID = PAYMENT.ResID
 WHERE CustID = @CustomerID
 
 GO
+
+SELECT * FROM fn_GetCustomerPayments(1)
 
 -- tr_Payment_PayTypeID :: On creation (or, if not required - then update) - if payment PayTypeID is a card, require a CCReference to be filled in as well.
 DROP TRIGGER IF EXISTS dbo.tr_Payment_PayTypeID
@@ -68,8 +93,11 @@ AS
 	-- If just inserted
 	ELSE IF ((SELECT PayTypeID FROM inserted) = 1)
 	BEGIN
-		Raiserror ('Cannot insert, needs CCReference for card payments', 16, 1) 
-		ROLLBACK TRAN
+		IF ((SELECT CCReference FROM inserted) IS NULL)
+		BEGIN
+			Raiserror ('Cannot insert, needs CCReference for card payments', 16, 1) 
+			ROLLBACK TRAN
+		END
 	END
 
 GO
